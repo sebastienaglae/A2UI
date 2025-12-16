@@ -15,6 +15,7 @@ You have a lot of flexibility, to bring custom comonents to a renderer, or build
 | **Lit (Web Components)** | Web | ✅ Stable | [Code](https://github.com/google/A2UI/tree/main/renderers/lit) |
 | **Angular** | Web | ✅ Stable | [Code](https://github.com/google/A2UI/tree/main/renderers/angular) |
 | **Flutter (GenUI SDK)** | Mobile/Desktop/Web | ✅ Stable | [Docs](https://docs.flutter.dev/ai/genui) · [Code](https://github.com/flutter/genui) |
+| **Unity UI Toolkit** | Unity/Games | ✅ Stable | [Code](https://github.com/google/A2UI/tree/main/renderers/unity) |
 | **React** | Web | 🚧 In Progress | Coming Q1 2026 |
 
 Check the [Roadmap](roadmap.md) for more.
@@ -55,6 +56,10 @@ flutter pub add flutter_genui
 ```
 
 TODO: Add a quickstart guide
+
+**Unity UI Toolkit:**
+
+See the [Unity renderer documentation](../renderers/unity/README.md) for installation and usage instructions.
 
 ## Adding custom components to a renderer
 

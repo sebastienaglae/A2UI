@@ -1,0 +1,29 @@
+{
+  "name": "com.google.a2ui.unity",
+  "version": "0.8.0",
+  "displayName": "A2UI Unity Renderer",
+  "description": "Unity UI Toolkit (UXML) renderer for the A2UI protocol. Enables Unity applications to render agent-generated UIs.",
+  "unity": "2021.3",
+  "keywords": [
+    "a2ui",
+    "ui-toolkit",
+    "uxml",
+    "agent",
+    "ai",
+    "generative-ui"
+  ],
+  "author": {
+    "name": "Google LLC",
+    "email": "a2ui-team@google.com",
+    "url": "https://github.com/google/A2UI"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/google/A2UI.git"
+  },
+  "dependencies": {
+    "com.unity.ui": "1.0.0"
+  },
+  "type": "library"
+}

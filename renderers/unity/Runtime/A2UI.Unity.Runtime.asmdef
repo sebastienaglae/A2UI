@@ -1,0 +1,20 @@
+{
+  "name": "A2UI.Unity.Runtime",
+  "rootNamespace": "A2UI.Unity",
+  "references": [],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [
+    {
+      "name": "com.unity.nuget.newtonsoft-json",
+      "expression": "",
+      "define": "NEWTONSOFT_JSON_AVAILABLE"
+    }
+  ],
+  "noEngineReferences": false
+}

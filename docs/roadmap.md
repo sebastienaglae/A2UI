@@ -26,6 +26,7 @@ Key features:
 | **Web Components (Lit)** | ✅ Stable | Web | Framework-agnostic, works anywhere |
 | **Angular** | ✅ Stable | Web | Full Angular integration |
 | **Flutter (GenUI SDK)** | ✅ Stable | Multi-platform | Works on mobile, web, desktop |
+| **Unity UI Toolkit** | ✅ Stable | Unity/Games | UXML-based rendering for Unity |
 | **React** | 🚧 In Progress | Web | Coming Q1 2026 |
 | **SwiftUI** | 📋 Planned | iOS/macOS | Planned for Q2 2026 |
 | **Jetpack Compose** | 📋 Planned | Android | Planned for Q2 2026 |
