@@ -15,8 +15,11 @@
  */
 
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using A2UI.Unity.Core;
+
+#if NEWTONSOFT_JSON_AVAILABLE
+using Newtonsoft.Json.Linq;
+#endif
 
 namespace A2UI.Unity.Utils
 {
@@ -39,6 +42,7 @@ namespace A2UI.Unity.Utils
             if (property is string strValue)
                 return strValue;
             
+#if NEWTONSOFT_JSON_AVAILABLE
             // Handle object with literalString or path
             if (property is JObject jObj)
             {
@@ -55,6 +59,9 @@ namespace A2UI.Unity.Utils
                         var value = dataModel.GetValue(path);
                         return value?.ToString() ?? string.Empty;
                     }
+                }
+            }
+#endif
                 }
             }
             

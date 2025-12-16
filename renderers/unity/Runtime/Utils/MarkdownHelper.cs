@@ -51,13 +51,16 @@ namespace A2UI.Unity.Utils
             else
             {
                 // Process inline markdown for body text
+                // Process in order: bold first, then italic, to avoid conflicts
+                
                 // Bold: **text** or __text__
                 result = Regex.Replace(result, @"\*\*(.+?)\*\*", "<b>$1</b>");
                 result = Regex.Replace(result, @"__(.+?)__", "<b>$1</b>");
                 
-                // Italic: *text* or _text_
-                result = Regex.Replace(result, @"\*(.+?)\*", "<i>$1</i>");
-                result = Regex.Replace(result, @"_(.+?)_", "<i>$1</i>");
+                // Italic: *text* or _text_ (but not if part of bold which is already replaced)
+                // Use negative lookahead/lookbehind to avoid matching asterisks that are part of <b> tags
+                result = Regex.Replace(result, @"(?<!<b>)\*(?!\*|>)(.+?)(?<!<)\*(?!</b>)", "<i>$1</i>");
+                result = Regex.Replace(result, @"(?<!<b>)_(?!_|>)(.+?)(?<!<)_(?!</b>)", "<i>$1</i>");
                 
                 // Code: `text`
                 result = Regex.Replace(result, @"`(.+?)`", "<color=#808080>$1</color>");

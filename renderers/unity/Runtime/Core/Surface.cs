@@ -94,8 +94,8 @@ namespace A2UI.Unity.Core
             dataModel = new DataModel();
             rootComponentId = null;
             
-            // Remove from container
-            if (RootVisualElement.parent != null)
+            // Remove from container if it's still a child
+            if (RootVisualElement.parent == containerElement)
             {
                 containerElement.Remove(RootVisualElement);
             }

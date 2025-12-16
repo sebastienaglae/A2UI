@@ -18,20 +18,25 @@ This renderer enables Unity applications to display agent-generated UIs using Un
 
 - Unity 2021.3 LTS or higher (UI Toolkit available)
 - .NET Standard 2.1 or .NET 6+
+- **Recommended**: Newtonsoft.Json package (for full JSON support)
+  - Install via Unity Package Manager: `com.unity.nuget.newtonsoft-json`
+  - The renderer will work with Unity's built-in JsonUtility as a fallback, but with limited functionality
 
 ## Installation
 
 ### Unity Package Manager
 
 1. Open Unity Package Manager
-2. Click "+" and select "Add package from git URL"
-3. Enter: `https://github.com/google/A2UI.git?path=/renderers/unity`
+2. (Recommended) Install Newtonsoft.Json: Add package by name `com.unity.nuget.newtonsoft-json`
+3. Click "+" and select "Add package from git URL"
+4. Enter: `https://github.com/google/A2UI.git?path=/renderers/unity`
 
 ### Manual Installation
 
 1. Download or clone this repository
-2. Copy the `renderers/unity/Runtime` folder to your Unity project's `Assets` folder
-3. Copy the `renderers/unity/package.json` to define the package (optional)
+2. (Recommended) Install Newtonsoft.Json via Package Manager
+3. Copy the `renderers/unity/Runtime` folder to your Unity project's `Assets` folder
+4. Copy the `renderers/unity/package.json` to define the package (optional)
 
 ## Quick Start
 

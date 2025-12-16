@@ -16,8 +16,12 @@
 
 using System;
 using System.Collections.Generic;
+using A2UI.Unity.Utils;
+
+#if NEWTONSOFT_JSON_AVAILABLE
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+#endif
 
 namespace A2UI.Unity.Core
 {
@@ -49,8 +53,15 @@ namespace A2UI.Unity.Core
             
             try
             {
+#if NEWTONSOFT_JSON_AVAILABLE
                 var jObject = JObject.Parse(jsonMessage);
                 var messageType = jObject["messageType"]?.ToString();
+#else
+                // Simplified parsing without Newtonsoft.Json
+                var dict = JsonHelper.ParseObject(jsonMessage);
+                var messageType = dict.ContainsKey("messageType") ? dict["messageType"]?.ToString() : null;
+                var jObject = (object)dict;
+#endif
                 
                 if (string.IsNullOrEmpty(messageType))
                 {
@@ -77,20 +88,30 @@ namespace A2UI.Unity.Core
                         break;
                 }
             }
+#if NEWTONSOFT_JSON_AVAILABLE
             catch (JsonException ex)
             {
                 OnError?.Invoke(new A2UIError($"JSON parsing error: {ex.Message}", ex));
             }
+#endif
             catch (Exception ex)
             {
                 OnError?.Invoke(new A2UIError($"Error processing message: {ex.Message}", ex));
             }
         }
         
-        private void ProcessSurfaceUpdate(JObject message)
+        private void ProcessSurfaceUpdate(object message)
         {
-            var surfaceId = message["surfaceId"]?.ToString() ?? "default";
-            var componentsArray = message["components"] as JArray;
+#if NEWTONSOFT_JSON_AVAILABLE
+            var jMsg = message as JObject;
+            var surfaceId = jMsg["surfaceId"]?.ToString() ?? "default";
+            var componentsArray = jMsg["components"] as JArray;
+#else
+            var dict = message as Dictionary<string, object>;
+            var surfaceId = JsonHelper.GetString(dict, "surfaceId");
+            if (string.IsNullOrEmpty(surfaceId)) surfaceId = "default";
+            var componentsArray = JsonHelper.GetValue(dict, "components");
+#endif
             
             if (componentsArray == null)
             {
@@ -99,6 +120,7 @@ namespace A2UI.Unity.Core
             }
             
             var components = new List<ComponentNode>();
+#if NEWTONSOFT_JSON_AVAILABLE
             foreach (var componentToken in componentsArray)
             {
                 try
@@ -114,14 +136,37 @@ namespace A2UI.Unity.Core
                     OnError?.Invoke(new A2UIError($"Error parsing component: {ex.Message}", ex));
                 }
             }
+#else
+            // Simplified component parsing without Newtonsoft
+            if (componentsArray is List<object> list)
+            {
+                foreach (var item in list)
+                {
+                    try
+                    {
+                        var component = ParseComponent(item);
+                        if (component != null)
+                        {
+                            components.Add(component);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        OnError?.Invoke(new A2UIError($"Error parsing component: {ex.Message}", ex));
+                    }
+                }
+            }
+#endif
             
             OnSurfaceUpdate?.Invoke(surfaceId, components);
         }
         
-        private void ProcessDataModelUpdate(JObject message)
+        private void ProcessDataModelUpdate(object message)
         {
-            var surfaceId = message["surfaceId"]?.ToString() ?? "default";
-            var data = message["data"];
+#if NEWTONSOFT_JSON_AVAILABLE
+            var jMsg = message as JObject;
+            var surfaceId = jMsg["surfaceId"]?.ToString() ?? "default";
+            var data = jMsg["data"];
             
             if (data == null)
             {
@@ -130,14 +175,37 @@ namespace A2UI.Unity.Core
             }
             
             var dataModel = new DataModel(data.ToObject<Dictionary<string, object>>());
+#else
+            var dict = message as Dictionary<string, object>;
+            var surfaceId = JsonHelper.GetString(dict, "surfaceId");
+            if (string.IsNullOrEmpty(surfaceId)) surfaceId = "default";
+            var data = JsonHelper.GetValue(dict, "data");
+            
+            if (data == null)
+            {
+                OnError?.Invoke(new A2UIError("dataModelUpdate missing 'data' field"));
+                return;
+            }
+            
+            var dataModel = new DataModel(data as Dictionary<string, object>);
+#endif
             OnDataModelUpdate?.Invoke(surfaceId, dataModel);
         }
         
-        private void ProcessBeginRendering(JObject message)
+        private void ProcessBeginRendering(object message)
         {
-            var surfaceId = message["surfaceId"]?.ToString() ?? "default";
-            var rootComponentId = message["rootComponentId"]?.ToString();
-            var catalogId = message["catalogId"]?.ToString();
+#if NEWTONSOFT_JSON_AVAILABLE
+            var jMsg = message as JObject;
+            var surfaceId = jMsg["surfaceId"]?.ToString() ?? "default";
+            var rootComponentId = jMsg["rootComponentId"]?.ToString();
+            var catalogId = jMsg["catalogId"]?.ToString();
+#else
+            var dict = message as Dictionary<string, object>;
+            var surfaceId = JsonHelper.GetString(dict, "surfaceId");
+            if (string.IsNullOrEmpty(surfaceId)) surfaceId = "default";
+            var rootComponentId = JsonHelper.GetString(dict, "rootComponentId");
+            var catalogId = JsonHelper.GetString(dict, "catalogId");
+#endif
             
             if (string.IsNullOrEmpty(rootComponentId))
             {
@@ -148,26 +216,35 @@ namespace A2UI.Unity.Core
             OnBeginRendering?.Invoke(surfaceId, rootComponentId, catalogId);
         }
         
-        private void ProcessDeleteSurface(JObject message)
+        private void ProcessDeleteSurface(object message)
         {
-            var surfaceId = message["surfaceId"]?.ToString() ?? "default";
+#if NEWTONSOFT_JSON_AVAILABLE
+            var jMsg = message as JObject;
+            var surfaceId = jMsg["surfaceId"]?.ToString() ?? "default";
+#else
+            var dict = message as Dictionary<string, object>;
+            var surfaceId = JsonHelper.GetString(dict, "surfaceId");
+            if (string.IsNullOrEmpty(surfaceId)) surfaceId = "default";
+#endif
             OnDeleteSurface?.Invoke(surfaceId);
         }
         
-        private ComponentNode ParseComponent(JObject componentObj)
+        private ComponentNode ParseComponent(object componentObj)
         {
             if (componentObj == null)
                 return null;
             
+#if NEWTONSOFT_JSON_AVAILABLE
+            var jObj = componentObj as JObject;
             var component = new ComponentNode
             {
-                Id = componentObj["id"]?.ToString(),
-                Type = componentObj["type"]?.ToString(),
+                Id = jObj["id"]?.ToString(),
+                Type = jObj["type"]?.ToString(),
                 Properties = new Dictionary<string, object>()
             };
             
             // Parse children
-            var childrenArray = componentObj["children"] as JArray;
+            var childrenArray = jObj["children"] as JArray;
             if (childrenArray != null)
             {
                 component.Children = new List<string>();
@@ -178,28 +255,77 @@ namespace A2UI.Unity.Core
             }
             
             // Parse weight
-            if (componentObj["weight"] != null)
+            if (jObj["weight"] != null)
             {
-                component.Weight = componentObj["weight"].ToObject<float>();
+                component.Weight = jObj["weight"].ToObject<float>();
             }
             
             // Parse properties
-            var properties = componentObj["properties"] as JObject;
+            var properties = jObj["properties"] as JObject;
             if (properties != null)
             {
                 component.Properties = properties.ToObject<Dictionary<string, object>>();
             }
             
             // Parse className
-            var classNameArray = componentObj["className"] as JArray;
-            if (classNameArray != null)
+            var classNameArray = jObj["className"] as JArray;
+#else
+            var dict = componentObj as Dictionary<string, object>;
+            var component = new ComponentNode
+            {
+                Id = JsonHelper.GetString(dict, "id"),
+                Type = JsonHelper.GetString(dict, "type"),
+                Properties = new Dictionary<string, object>()
+            };
+            
+            // Parse children (simplified)
+            var childrenArray = JsonHelper.GetValue(dict, "children");
+            if (childrenArray is List<object> childList)
+            {
+                component.Children = new List<string>();
+                foreach (var child in childList)
+                {
+                    component.Children.Add(child?.ToString());
+                }
+            }
+            
+            // Parse weight (simplified)
+            var weightValue = JsonHelper.GetValue(dict, "weight");
+            if (weightValue != null && float.TryParse(weightValue.ToString(), out var weight))
+            {
+                component.Weight = weight;
+            }
+            
+            // Parse properties (simplified)
+            var properties = JsonHelper.GetValue(dict, "properties");
+            if (properties is Dictionary<string, object> propDict)
+            {
+                component.Properties = propDict;
+            }
+            
+            // Parse className (simplified)
+            var classNameArray = JsonHelper.GetValue(dict, "className");
+#endif
+            
+#if NEWTONSOFT_JSON_AVAILABLE
+            if (classNameArray != null && classNameArray is JArray jArray)
             {
                 component.ClassName = new List<string>();
-                foreach (var className in classNameArray)
+                foreach (var className in jArray)
                 {
                     component.ClassName.Add(className.ToString());
                 }
             }
+#else
+            if (classNameArray is List<object> classList)
+            {
+                component.ClassName = new List<string>();
+                foreach (var className in classList)
+                {
+                    component.ClassName.Add(className?.ToString());
+                }
+            }
+#endif
             
             return component;
         }

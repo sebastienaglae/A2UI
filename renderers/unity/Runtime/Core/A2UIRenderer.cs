@@ -139,7 +139,8 @@ namespace A2UI.Unity.Core
             if (surfaces.TryGetValue(surfaceId, out var surface))
             {
                 surface.UpdateDataModel(dataModel);
-                OnDataModelUpdate?.Invoke(surfaceId, "", dataModel);
+                // Invoke event with root path since this is a full data model update
+                OnDataModelUpdate?.Invoke(surfaceId, "/", dataModel);
             }
         }
         

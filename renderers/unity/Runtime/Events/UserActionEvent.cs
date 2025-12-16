@@ -15,6 +15,7 @@
  */
 
 using System.Collections.Generic;
+using A2UI.Unity.Utils;
 
 namespace A2UI.Unity.Core
 {
@@ -49,7 +50,8 @@ namespace A2UI.Unity.Core
                 ["payload"] = Payload
             };
             
-            return Newtonsoft.Json.JsonConvert.SerializeObject(data);
+            return JsonHelper.Serialize(data);
+        }
         }
     }
 }
