@@ -1,0 +1,164 @@
+/* Default A2UI Unity UI Toolkit Stylesheet */
+
+/* Base surface styling */
+.a2ui-surface {
+    flex-grow: 1;
+    padding: 8px;
+}
+
+/* Text components */
+.a2ui-text {
+    margin: 4px 0;
+}
+
+.a2ui-text-h1 {
+    font-size: 24px;
+    -unity-font-style: bold;
+    margin: 8px 0;
+}
+
+.a2ui-text-h2 {
+    font-size: 20px;
+    -unity-font-style: bold;
+    margin: 8px 0;
+}
+
+.a2ui-text-h3 {
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin: 6px 0;
+}
+
+.a2ui-text-h4 {
+    font-size: 16px;
+    -unity-font-style: bold;
+    margin: 6px 0;
+}
+
+.a2ui-text-h5 {
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin: 4px 0;
+}
+
+.a2ui-text-caption {
+    font-size: 12px;
+    -unity-font-style: italic;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+/* Button components */
+.a2ui-button {
+    padding: 8px 16px;
+    margin: 4px;
+    border-radius: 4px;
+    background-color: rgb(0, 122, 255);
+    color: white;
+    border-width: 0;
+}
+
+.a2ui-button:hover {
+    background-color: rgb(0, 100, 200);
+}
+
+.a2ui-button:active {
+    background-color: rgb(0, 80, 160);
+}
+
+/* Input components */
+.a2ui-textfield {
+    margin: 4px;
+    padding: 8px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+.a2ui-checkbox {
+    margin: 4px;
+}
+
+.a2ui-slider {
+    margin: 4px;
+}
+
+/* Layout components */
+.a2ui-column {
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.a2ui-row {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+.a2ui-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px;
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+.a2ui-divider {
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
+    margin: 8px 0;
+}
+
+/* Media components */
+.a2ui-image {
+    margin: 4px;
+}
+
+.a2ui-icon {
+    width: 24px;
+    height: 24px;
+    margin: 4px;
+}
+
+/* Complex components */
+.a2ui-list {
+    margin: 8px;
+    flex-grow: 1;
+}
+
+.a2ui-tabs {
+    margin: 8px;
+    flex-grow: 1;
+}
+
+.a2ui-modal {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.a2ui-modal-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 80%;
+    max-height: 80%;
+}
+
+/* Error styling */
+.a2ui-error {
+    color: red;
+    -unity-font-style: italic;
+}
+
+.a2ui-unknown-component {
+    background-color: rgba(255, 0, 0, 0.1);
+    padding: 8px;
+    margin: 4px;
+    border-width: 1px;
+    border-color: red;
+}
